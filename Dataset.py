@@ -1,3 +1,4 @@
+# coding=utf-8
 import numpy as np
 from Utility import Utility
 from Parameters import Parameters
@@ -18,8 +19,11 @@ class Dataset():
         self.__test = []
         
     def loadData(self, filename):
+        # np处理源文件
         ds = np.loadtxt(self.directory+filename)
+        # 重设图片的大小，产生实例。
         self.__instances = self.__createInstances(ds)
+        # 将数据集分隔为训练集与测试集
         train_idx, test_idx = self.__splitDataset(self.__instances)
         self.__train = self.__instances[train_idx]
         self.__test = self.__instances[test_idx]
@@ -54,12 +58,18 @@ class Dataset():
             indices
         """
         size = len(instances)
+        # 保留50个测试实例，其余用作训练
         train_idx = np.arange(0, size-Parameters.testSetSize)
         test_idx = np.arange(size-Parameters.testSetSize, size)
         return train_idx, test_idx
         
     def __standardise(self, col):
+        # col is an [n*1] matrix
+        # img is an [n*1] matrix
+        # img的平方求和为1
+        # col implements the
         img = (col - np.mean(col)) / np.std(col)
+        # 对原始数据进行处理，返回一个img，均值以及标准差
         return img, np.mean(col), np.std(col)
 if __name__ == '__main__':
     import matplotlib.pyplot as plt

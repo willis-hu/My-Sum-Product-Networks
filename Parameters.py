@@ -1,5 +1,7 @@
+# coding=utf-8
 class Parameters:
     # image attributes
+    # 记录图片的属性，分辨率
     imageWidth = 64
     imageHeight = 64
     baseResolution = 4

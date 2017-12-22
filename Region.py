@@ -1,3 +1,4 @@
+# coding=utf-8
 from Parameters import Parameters
 from SumNode import SumNode
 from ProductNode import ProductNode
@@ -10,6 +11,7 @@ class Region():
         Using the coordinates of the four corners
         as the identifier for a specific region of
         the picture.
+        使用图片四个角的坐标作为图片特定区域的标识符。
     """
     __region_dict = {}
 
@@ -27,15 +29,18 @@ class Region():
         if self.width <= Parameters.baseResolution \
            and self.height <= Parameters.baseResolution:
             self.interval = 1
+        #     标记间隔是否小于规定的基础分辨率
         else:
             self.interval = 4
         # SumNodes for the region
+        # 该区域对应的sumNode初始化
         self.sumNodes = []
         self.mapSumNodeIndex = -1
         self.mapSumNodeProb = 100
         self.mapProdNodeProb = 100
         # dict for finding best decomposition
         # each decomposition corresponds to a ProdNode
+        # 寻找最佳的区域划分
         self.prodNodes = dict() # key - decomp_id,  value - ProdNode
         self.decompPerInstance = dict() # key - instance index,  value - decomp_id
         self.mapSumNodePerInstance = dict() # key - instance index, value - mapSumNode index
@@ -50,15 +55,18 @@ class Region():
         """
             This will only be called in unit regions
         """
+        # sumNodes个数为20
         assert len(self.sumNodes) == Parameters.numSumNodePerPixel
         max_val = 0.0
         self.mapSumNodeIndex = -1
+        # 保存这些sumNode中logValue最大的值及其索引值
         for i, node in enumerate(self.sumNodes):
             tmp = self.GaussianKernel(value, self.means[i])
             node.setLogValue(tmp)
             if self.mapSumNodeIndex == -1 or tmp > max_val:
                 self.mapSumNodeIndex = i
                 max_val = tmp
+                
     def setBaseValuesForBlank(self):
         """
             This will only be called in unit regions

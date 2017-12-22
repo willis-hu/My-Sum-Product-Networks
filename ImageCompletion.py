@@ -24,8 +24,8 @@ class ImageCompletion:
         
         length = Parameters.imageWidth * Parameters.imageHeight
         data = np.reshape(Utility.parseBuffer, (length, test_size), 'F')
-        #error = np.linalg.norm(data - Utility.testSet,2) / test_size
-        #print 'The mean square error is %f' % error
+        error = np.linalg.norm(data - Utility.testSet,2) / test_size
+        print 'The mean square error is %f' % error
         np.savetxt(name, data)
         
         os.chdir('../')

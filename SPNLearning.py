@@ -1,3 +1,4 @@
+# coding=utf-8
 from SPN import SPN
 from Parameters import Parameters
 from Dataset import Dataset
@@ -30,6 +31,7 @@ class SPNLearning:
         print 'Initializing...'
         self.__spn.addTrainingSet(dataset)
         self.__spn.initialize()
+        self.__spn.printLearnedModel()
 
         # learning in minibatches
         prior = Parameters.prior
@@ -66,6 +68,7 @@ class SPNLearning:
                     self.__spn.MAPinference(index, instance)
                     # This may create ProdNode for each decomposition
                     self.__spn.setParseToMAP(index)
+                    # self.__spn.printLearnedModel()
                     
                 # M-step for this minibatch
                 # This will append ProdNodes to its parent SumNode
@@ -76,6 +79,7 @@ class SPNLearning:
                 print self.__spn._SPN__rootSumNode.getCounts()
                 for node in self.__spn._SPN__rootSumNode.getChildren():
                     print self.__spn._SPN__rootSumNode.getChildCounts(node)
+                self.__spn.printLearnedModel()
             # after sweeping through the whole dataset, clear unusued
             print 'Clear unused decompositions'
             self.__spn.clearUnusedDecomp()
@@ -100,6 +104,7 @@ class SPNLearning:
             
 if __name__ == '__main__':
     s = SPNLearning()
+    # 对不符合64*64格式的数据进行处理。
     data = Dataset()
     data.loadData('olivetti.raw')
     s.learn(data.getTrainingSet())

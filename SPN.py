@@ -1,3 +1,4 @@
+# coding=utf-8
 from Parameters import Parameters
 from Region import Region
 from Instance import Instance
@@ -43,12 +44,15 @@ class SPN():
         values = np.zeros(num_inst)
         for i, instance in enumerate(self.__dataset):
             values[i] = instance.getValue(r.rowUp, r.columnLeft)
+        # value记录每个instance的在该区域的左上角数值
         values = np.sort(values)
+        # 对value值排序
         for step in xrange(Parameters.numSumNodePerPixel):
             lowerIndex = step * quantileSize
             upperIndex = (step + 1) * quantileSize
             upperIndex = upperIndex if upperIndex < num_inst else num_inst
             r.means[step] = np.mean(values[lowerIndex : upperIndex])
+            # 所有的region的means数组值不相同，值递减，value数组值不相同，以这个2*2区域标识顶点坐标？
             r.variances[step] = np.var(values[lowerIndex : upperIndex])
             r.counts = len(values[lowerIndex : upperIndex])
         r.totalCounts = num_inst
@@ -118,6 +122,7 @@ class SPN():
                 # find the range of a patch
                 # l = left, r = right
                 # d = down, u = up
+                # 筛选出4*4区域，l从0-61。u从0-57。按4累加
                 for l in xrange(0, iw - colStepSize * br + 1, br):
                     r = l + colStepSize * br
                     for u in xrange(0, ih - rowStepSize * br + 1, br):
