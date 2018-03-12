@@ -16,7 +16,7 @@ Reference:
 Sum-Product Networks: A New Deep Architecture, Hoifung Poon and Pedro Domingos
 
 原项目作者已删除项目，项目中两项bug已修复。
----- BUG
+#### BUG
 
 1. allocateSumNode(),分配相同地址的SumNode。
 2. initUnitRegion()，counts赋值错误。
