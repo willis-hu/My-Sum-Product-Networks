@@ -1,19 +1,9 @@
 Sum-Product-Networks
-====================
-Author  : Chengcheng Zhao
-Contact : chengcheng.zcc@alibaba-inc.com
-
-This package adapts Hoifung Poon's Java code for Sum-Product Networks.
-It is purely implemented in Python without any optimization so far. For
-now, it is basicly for personal interests, but I hope to get any feedbacks
-from anyone who is also interested in Sum-Product Networks.
-
-This package is not well tested, it may contain some bugs.
-
-Enjoy it!
 
 Reference:
 Sum-Product Networks: A New Deep Architecture, Hoifung Poon and Pedro Domingos
+
+
 
 原项目作者已删除项目，项目中两项bug已修复。
 #### BUG
@@ -42,3 +32,26 @@ Sum-Product Networks: A New Deep Architecture, Hoifung Poon and Pedro Domingos
     - 将instance值输入到对应region中，每个region记录该区域左上角的值。区域均为1*1大小。
     - 每个节点的logvalue记录该(-((value - mean)^2) / 2)。4个sumNode与4个mean值对应。
     - region.decompOption记录该区域的最优分解。
+
+NOTE:
+SPN两个特征：
+    1. 每个节点有自己的语义。
+    2. 能进行推导的概率图模型。
+
+P节点相当于神经网络中的 ***激活函数***。
+
+三种概率图模型对比：
+  - 贝叶斯网络，intractable推导。
+  - 马尔可夫网。intractable推导。
+  - SPN。tractable推导。
+
+SPN显示了多个随机变量之间的 ***联合分布*** 。
+
+一个概率图表示：![概率图](H:\a_huqigen\Markdown笔记\图片\spn-概率图.png)
+可以理解为：一个人选择购买衣服，看中了两件衣服，一件上衣一件裤子。找三个专家来评判买或者不买,A,B精通买上衣，C精通买裤子。找专家的过程包括：掷骰子，决定找AC或者BC，A给出的意见是20%不买，80%买。B给出的意见是10%不买，90%买。C给出的意见是40%不买，60%买。那么最终买全套或者买裤子或者买上衣的概率计算，可以通过在spn上的推导获得。
+
+SPN中，sum节点代表着 **隐变量**，product节点代表 **因式分解**。
+
+SPN中的学习可以分为 **权重学习** 和 **结构学习**，结构学习中包括 **变量分离** 和 **样本聚类** 。
+
+先给SPN中的边权重一个稀疏先验，之后再通过梯度下降法更新权重。在已知权重时，每个节点上的值是可以计算得到的，根据梯度更新公式∂S(x)/∂wij =(∂S(x)/∂Si(x))Sj(x),可以自上而下更新权重的值。
